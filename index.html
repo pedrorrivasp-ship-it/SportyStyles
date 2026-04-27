@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportyStyle | Tienda Deportiva Premium</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Auth0 SPA SDK -->
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1.2/auth0-spa-js.production.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo" id="nav-btn-home">
+            <span class="logo-text">Sporty</span><span class="logo-accent">Style</span>
+        </div>
+        <div class="nav-links">
+            <span id="welcome-msg" class="hidden"></span>
+            <button id="btn-cart" class="nav-icon-btn hidden">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <span id="cart-badge" class="badge">0</span>
+            </button>
+            <button id="btn-login" class="btn btn-primary">Iniciar Sesión</button>
+            <button id="btn-logout" class="btn btn-outline hidden">Cerrar Sesión</button>
+        </div>
+    </nav>
+
+    <!-- Notificaciones (Toast) -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <main class="container">
+        <!-- SECCIÓN: INICIO / CATÁLOGO -->
+        <section id="home-section" class="section active">
+            <div class="hero">
+                <h1>Supera tus límites con <span>SportyStyle</span></h1>
+                <p>Equipamiento deportivo de alto rendimiento para alcanzar tu máximo potencial.</p>
+            </div>
+            
+            <div class="products-header">
+                <h2>Catálogo de Productos</h2>
+                <div class="category-filters">
+                    <button class="filter-btn active" data-category="all">Todos</button>
+                    <button class="filter-btn" data-category="Camisetas">Camisetas</button>
+                    <button class="filter-btn" data-category="Pantalones">Pantalones</button>
+                    <button class="filter-btn" data-category="Accesorios">Accesorios</button>
+                </div>
+            </div>
+
+            <!-- Loader y Grid de Productos -->
+            <div id="products-grid" class="grid">
+                <!-- Se poblará vía JS -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN: CARRITO DE COMPRAS -->
+        <section id="cart-section" class="section hidden">
+            <div class="cart-header">
+                <button id="btn-back-home" class="btn-text">← Volver a la tienda</button>
+                <h2>Tu Carrito de Compras</h2>
+            </div>
+            <div class="cart-layout">
+                <div class="cart-items" id="cart-items-container">
+                    <!-- Se poblará vía JS -->
+                </div>
+                <div class="cart-summary">
+                    <h3>Resumen de orden</h3>
+                    <div class="summary-line">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal">$0</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Envío</span>
+                        <span>Gratis</span>
+                    </div>
+                    <div class="summary-total">
+                        <span>Total (CLP)</span>
+                        <span id="cart-total">$0</span>
+                    </div>
+                    <button id="btn-go-checkout" class="btn btn-primary btn-full">Proceder al Pago</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: CHECKOUT -->
+        <section id="checkout-section" class="section hidden">
+            <div class="cart-header">
+                <button id="btn-back-cart" class="btn-text">← Volver al carrito</button>
+                <h2>Finalizar Compra</h2>
+            </div>
+            <div class="checkout-layout">
+                <form id="checkout-form" class="checkout-form">
+                    <h3>Datos de Envío y Contacto</h3>
+                    <div class="form-group">
+                        <label for="name">Nombre completo</label>
+                        <input type="text" id="name" required placeholder="Ej: Pedro Pérez">
+                        <span class="error-msg" id="error-name"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Dirección de envío</label>
+                        <input type="text" id="address" required placeholder="Ej: Av. Providencia 123">
+                        <span class="error-msg" id="error-address"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" required placeholder="ejemplo@gmail.com">
+                        <span class="error-msg" id="error-email">El correo debe ser válido (incluir @ y dominio)</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="tel" id="phone" required placeholder="56912345678">
+                        <span class="error-msg" id="error-phone">Debe contener solo números (mínimo 8 dígitos)</span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" id="btn-submit-order">Confirmar Orden</button>
+                </form>
+                <div class="checkout-summary">
+                    <h3>Tu Orden</h3>
+                    <div id="checkout-items-preview"></div>
+                    <div class="summary-total">
+                        <span>Total a Pagar</span>
+                        <span id="checkout-total">$0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: ÉXITO -->
+        <section id="success-section" class="section hidden">
+            <div class="success-card">
+                <div class="success-icon">✓</div>
+                <h2>¡Gracias por tu compra!</h2>
+                <p>Tu orden ha sido procesada con éxito y está en camino.</p>
+                <div class="order-details-card" id="final-order-details">
+                    <!-- Se llenará vía JS -->
+                </div>
+                <button id="btn-continue-shopping" class="btn btn-primary">Volver al inicio</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
